@@ -1,10 +1,33 @@
 server:
   port: 8082
 spring:
+
   application:
     name: ms-mail
+
   cloud:
     config:
       discovery:
         enabled: true
         service-id: ms-config-server
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic:
+      userCreated: USER_CREATED_TOPIC
+    consumer:
+      group-id: mintfintech.service.core-banking
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: 'com.jide.userservice.Entity.User'
+
+eureka:
+  instance:
+    prefer-ip-address: true
