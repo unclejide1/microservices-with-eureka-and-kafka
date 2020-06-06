@@ -6,3 +6,6 @@ spring:
           uri: https://github.com/unclejide1/microservices-with-eureka-and-kafka/
           search-paths:
             - "ms-config-properties/{application}/{profile}"
+eureka:
+  instance:
+    prefer-ip-address: true
