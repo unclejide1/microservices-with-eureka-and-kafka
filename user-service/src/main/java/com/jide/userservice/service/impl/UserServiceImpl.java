@@ -1,24 +1,21 @@
 package com.jide.userservice.service.impl;
 
 import com.jide.userservice.Entity.User;
-import com.jide.userservice.kafka.producer.Sender;
 import com.jide.userservice.repository.UserRepository;
+import com.jide.userservice.service.PublishUserRegisteredUseCase;
 import com.jide.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Value("${spring.kafka.topic.userCreated}")
-    private String USER_CREATED_TOPIC;
 
     private UserRepository userRepository;
-    private Sender sender;
+    private PublishUserRegisteredUseCase sender;
 
     @Autowired
-    UserServiceImpl(UserRepository userRepository, Sender sender) {
+    UserServiceImpl(UserRepository userRepository, PublishUserRegisteredUseCase sender) {
         this.userRepository = userRepository;
         this.sender = sender;
     }
@@ -26,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User input) {
         User createdUser = userRepository.save(input);
-        sender.send(USER_CREATED_TOPIC, createdUser);
+        sender.publishCreatedUser(createdUser.getId());
         return createdUser;
     }
 
