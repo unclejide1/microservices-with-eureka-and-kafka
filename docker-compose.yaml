@@ -1,0 +1,19 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kakfa
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+networks:
+  default:
+    external:
+      name: nginx-proxy
+     # KAFKA_CREATE_TOPICS: "test:1:1" KAFKA_ADVERTISED_HOST_NAME: kafka KAFKA_ADVERTISED_PORT: 9092
+# resource: https://linuxhint.com/docker_compose_kafka/ ; https://github.com/wurstmeister/kafka-docker
